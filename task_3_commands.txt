@@ -1,0 +1,28 @@
+CREATE TABLE infectious_cases_clean AS 
+SELECT 
+    Entity,
+    Code,
+    Year,
+    Number_yaws,
+    polio_cases,
+    cases_guinea_worm,
+    NULLIF(Number_rabies, '') AS Number_rabies, 
+    Number_malaria,
+    Number_hiv,
+    Number_tuberculosis,
+    Number_smallpox,
+    Number_cholera_cases
+FROM infectious_cases;
+
+SELECT 
+    Entity,
+    Code,
+    AVG(Number_rabies) AS AverageNumberRabies,
+    MIN(Number_rabies) AS MinNumberRabies,
+    MAX(Number_rabies) AS MaxNumberRabies,
+    SUM(Number_rabies) AS TotalNumberRabies
+FROM infectious_cases_clean
+WHERE Number_rabies IS NOT NULL
+GROUP BY Entity, Code
+ORDER BY AverageNumberRabies DESC
+LIMIT 10;

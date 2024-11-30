@@ -1,0 +1,40 @@
+USE pandemic;
+
+CREATE TABLE Countries (
+    CountryID INT AUTO_INCREMENT PRIMARY KEY,
+    Entity VARCHAR(255) UNIQUE,
+    Code VARCHAR(10) UNIQUE
+);
+
+INSERT INTO Countries (Entity, Code)
+SELECT DISTINCT Entity, Code
+FROM infectious_cases;
+
+CREATE TABLE DiseaseCases (
+    CaseID INT AUTO_INCREMENT PRIMARY KEY,
+    CountryID INT,
+    Year INT,
+    DiseaseName VARCHAR(255),
+    NumberOfCases VARCHAR(255),
+    FOREIGN KEY (CountryID) REFERENCES Countries(CountryID)
+);
+
+INSERT INTO DiseaseCases (CountryID, Year, DiseaseName, NumberOfCases)
+SELECT 
+    c.CountryID,
+    i.Year,
+    'yaws' AS DiseaseName,
+    i.Number_yaws AS NumberOfCases
+FROM infectious_cases i
+JOIN Countries c ON i.Entity = c.Entity
+WHERE i.Number_yaws IS NOT NULL;
+
+INSERT INTO DiseaseCases (CountryID, Year, DiseaseName, NumberOfCases)
+SELECT 
+    c.CountryID,
+    i.Year,
+    'polio' AS DiseaseName,
+    i.polio_cases AS NumberOfCases
+FROM infectious_cases i
+JOIN Countries c ON i.Entity = c.Entity
+WHERE i.polio_cases IS NOT NULL;

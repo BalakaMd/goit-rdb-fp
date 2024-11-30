@@ -1,0 +1,6 @@
+SELECT 
+    Year,
+    DATE_FORMAT(CONCAT(Year, '-01-01'), '%Y-%m-%d') AS StartOfYear, 
+    CURRENT_DATE AS CurrentDate,
+    TIMESTAMPDIFF(YEAR, DATE_FORMAT(CONCAT(Year, '-01-01'), '%Y-%m-%d'), CURRENT_DATE) AS DifferenceInYears 
+FROM infectious_cases; 

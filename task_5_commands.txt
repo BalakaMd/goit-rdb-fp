@@ -1,0 +1,23 @@
+DELIMITER //
+
+CREATE FUNCTION CalculateYearDifference(inputYear INT)
+RETURNS INT
+DETERMINISTIC
+BEGIN
+    DECLARE startOfYear DATE;
+    DECLARE currentDate DATE;
+    DECLARE yearDifference INT;
+
+    SET startOfYear = DATE_FORMAT(CONCAT(inputYear, '-01-01'), '%Y-%m-%d');    
+    SET currentDate = CURRENT_DATE;    
+    SET yearDifference = TIMESTAMPDIFF(YEAR, startOfYear, currentDate);
+
+    RETURN yearDifference;
+END//
+
+DELIMITER ;
+
+SELECT 
+    Year,
+    CalculateYearDifference(Year) AS DifferenceInYears
+FROM infectious_cases;
